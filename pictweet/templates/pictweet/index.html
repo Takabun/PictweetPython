@@ -1,0 +1,69 @@
+{% load static %}
+{% load sass_tags %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pictweet</title>
+      <link rel="stylesheet" type="text/css" href="{% sass_src 'pictweet/style.scss' %}">
+
+    <script type="text/javascript"></script>
+      WebFontConfig = {
+        google: { families: [ 'Unica+One::latin' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+  <header class="header">
+    <div class="header__bar row">
+      <h1 class="grid-6"><a href="/">PicTweet</a></h1>
+        {% if user.id  %}
+        <div class="user_nav grid-6">
+          <span>{{ user.nickname }}
+            <ul class="user__info">
+              <li>
+                <a href="/users/<%= current_user.id %>">マイページ</a>
+                <!-- <a href="">ログアウトする</a> -->
+              </li>
+            </ul>
+          </span>
+          <a class="post" href="/pictweet/new">投稿する</a>
+        </div>
+        {% else %}
+        <div class="grid-6">
+            <!-- <a href="">ログイン</a>
+            <a href=" %}">アカウント作成</a> -->
+        </div>
+        {% endif %}
+    </div>
+  </header>
+
+    <!-- <%= yield %> -->
+    <!-- {% block body %} -->
+
+    {% for tweet in lists %}
+      {{tweet.text}}
+      {{tweet.image}}
+    {% endfor %}
+    <!-- {% endblock %} -->
+    
+    <!-- <%= yield %> -->
+
+    <footer>
+      <p>
+        Copyright PicTweet 2014.
+      </p>
+    </footer>
+  </body>
+</html>
+
+
