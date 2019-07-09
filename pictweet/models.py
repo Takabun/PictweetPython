@@ -18,7 +18,6 @@ class Tweet(models.Model):
   like_count = models.IntegerField(default=0)
 
 
-
 class Comment(models.Model):
   text = models.TextField(max_length=140, blank=False)
   tweet_id = models.ForeignKey(Tweet, on_delete=models.CASCADE)

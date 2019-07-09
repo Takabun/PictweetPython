@@ -11,11 +11,19 @@ from . import forms
 #現在時刻
 from datetime import datetime
 
-#ユーザー新規登録
+#ユーザー新規登録(ボツ)
 from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
-from django.views.generic import CreateView, View
-from . forms import UserCreateForm
+# from django.contrib.auth import login, authenticate
+# from django.views.generic import CreateView, View
+# from . forms import UserCreateForm
+
+# ユーザー新規登録(new!!!)
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView,CreateView
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+
 
 
 
@@ -38,7 +46,7 @@ def new(request):
       text = Tweet.text,
       # image = Tweet.image,
       date_time = datetime.now()
-      # user_id_id = 1
+      # user_id_id = request.user.id
       )
     return redirect(to="/pictweet")
 
@@ -91,42 +99,69 @@ def user(request):
   # return render(request, 'pictweet/index.user', context)
 
 
-# 新規登録
-class Create_Account(CreateView):
-    def post(self, request, *args, **kwargs):
-        form = UserCreateForm(data=request.POST)
-        if form.is_valid():
-            form.save()
-            #フォームから'username'を読み取る
-            nickrname = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
-            #フォームから'password'を読み取る
-            password = form.cleaned_data.get('password')
-            user = authenticate(nickname=nickname, email=email, password=password)
-            login(request, user)
-            return redirect('/')
-        return render(request, 'createuser.html', {'form': form,})
 
-    def get(self, request, *args, **kwargs):
-        form = UserCreateForm(request.POST)
-        return  render(request, 'createuser.html', {'form': form,})
+class loginView(LoginView):
+    form_class = forms.LoginForm
+    template_name = "pictweet/login.html"
 
-create_account = Create_Account.as_view()
+class logoutView(LoginRequiredMixin, LogoutView):
+    template_name = "pictweet/logout.html"
+
+class createView(CreateView):
+    form_class = UserCreationForm
+    template_name = "pictweet/createuser.html"
+    success_url = reverse_lazy("login")
 
 
-#ログイン機能
-class Account_login(View):
-    def post(self, request, *arg, **kwargs):
-        form = LoginForm(data=request.POST)
-        if form.is_valid():
-            nickname = form.cleaned_data.get('nickname')
-            user = User.objects.get(nickname=nickname)
-            login(request, user)
-            return redirect('/')
-        return render(request, 'login.html', {'form': form,})
 
-    def get(self, request, *args, **kwargs):
-        form = LoginForm(request.POST)
-        return render(request, 'login.html', {'form': form,})
 
-account_login = Account_login.as_view()
+
+
+
+
+
+
+
+
+# # # 新規登録(ボツ)
+# # # class Create_Account(CreateView):
+# # #     def post(self, request, *args, **kwargs):
+# # #         form = UserCreateForm(data=request.POST)
+# # #         if form.is_valid():
+# # #             form.save()
+# # #             フォームから'username'を読み取る
+# # #             nickrname = form.cleaned_data.get('username')
+# # #             email = form.cleaned_data.get('email')
+# # #             フォームから'password'を読み取る
+# # #             password = form.cleaned_data.get('password')
+# # #             user = authenticate(nickname=nickname, email=email, password=password)
+# # #             login(request, user)
+# # #             return redirect('/')
+# # #         return render(request, 'createuser.html', {'form': form,})
+
+# # #     def get(self, request, *args, **kwargs):
+# # #         form = UserCreateForm(request.POST)
+# # #         return  render(request, 'createuser.html', {'form': form,})
+
+# # # create_account = Create_Account.as_view()
+
+
+# # # ログイン機能(ボツ)
+# # # class Account_login(View):
+# # #     def post(self, request, *arg, **kwargs):
+# # #         form = LoginForm(data=request.POST)
+# # #         if form.is_valid():
+# # #             nickname = form.cleaned_data.get('nickname')
+# # #             user = User.objects.get(nickname=nickname)
+# # #             login(request, user)
+# # #             return redirect('/')
+# # #         return render(request, 'login.html', {'form': form,})
+
+# # #     def get(self, request, *args, **kwargs):
+# # #         form = LoginForm(request.POST)
+# # #         return render(request, 'login.html', {'form': form,})
+
+# # # account_login = Account_login.as_view()
+
+
+

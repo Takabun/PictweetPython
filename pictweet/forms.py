@@ -1,7 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
+# from django.contrib.auth.forms import UserCreationForm
+# from django.contrib.auth.forms import AuthenticationForm
 from .models import User
+from django.contrib.auth import forms as auth_forms
+
+
 
 class TweetForm(forms.Form):
     text = forms.CharField(
@@ -20,23 +23,9 @@ class TweetForm(forms.Form):
 # like_count = models.IntegerField(default=0)
 
 
-#新規登録
-class UserCreateForm(UserCreationForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        #htmlの表示を変更可能にします
-        self.fields['nickname'].widget.attrs['class'] = 'form-control'
-        self.fields['email'].widget.attrs['class'] = 'form-control'
-        self.fields['password'].widget.attrs['class'] = 'form-control'
-
-    class Meta:
-       model = User
-       fields = ("nickname", "email", "password",)
-
-#ログイン
-class LoginForm(AuthenticationForm):
-    def __init__(self, *args, **kwargs):
-       super().__init__(*args, **kwargs)
-       #htmlの表示を変更可能にします
-       self.fields['nickname'].widget.attrs['class'] = 'form-control'
-       self.fields['password'].widget.attrs['class'] = 'form-control'
+class LoginForm(auth_forms.AuthenticationForm):
+    '''ログインフォーム'''
+    def __init__(self, *args, **kw):
+        super().__init__(*args, **kw)
+        for field in self.fields.values():
+            field.widget.attrs['placeholder'] = field.label
