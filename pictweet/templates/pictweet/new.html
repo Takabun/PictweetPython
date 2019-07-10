@@ -48,34 +48,11 @@
 
 
 
-  <div class="contents row">
-    {{form}}
-    <!-- <%= form_tag('/tweets', method: :post) do %> -->
-      <h3>
-        投稿する
-      </h3>
-      <input placeholder="Image URL" type="text" name="image" autofocus="true">
-      <textarea placeholder="text" name="text" cols="30" rows="10"></textarea>
-      <input type="submit" value="SENT">
-    <!-- <% end %> -->
-  </div>
-
-  
-    <footer>
-      <p>
-        Copyright PicTweet 2014.
-      </p>
-    </footer>
-  </body>
-</html>
-
-
-<form method="POST" action="">
+<form method="POST" enctype="multipart/form-data">
+  <!-- ここが、action=""のままだったら、POSTアクションが動かなかたよ！ -->
   {% csrf_token %}
-  <label> {{ form.text }}</label><br>
-
-  <label style="vertical-align: top;"> {{ form.image }}</label><br>
-
+  <!-- <label> {{ form.text }}</label><br>
+  <label style="vertical-align: top;"> {{ form.image }}</label><br> -->
+  {{ form.as_p }} 
   <input type="submit" value="送信">
 </form>
-
