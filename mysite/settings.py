@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts.apps.AccountsConfig',#accounts
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,15 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 SASS_PROCESSOR_ROOT = 'static'
+
+
+# #accountsアプリ関連(accontsアプリを経由してログインする時は使用)
+# LOGIN_URL = 'login' # ログインしていないときのリダイレクト先
+# LOGIN_REDIRECT_URL = 'index' # ログイン後のリダイレクト先
+# LOGOUT_REDIRECT_URL = 'index' # ログアウト後のリダイレクト先
+
+#Pictweetログイン関連()
+LOGIN_URL='pictweet:login'     # ログイン
+LOGOUT_URL='pictweet:logout'   # ログアウト
+LOGIN_REDIRECT_URL='pictweet:index'      # ログイン
+LOGOUT_REDIRECT_URL='pictweet:login'    # ログアウト
