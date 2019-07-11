@@ -5,7 +5,7 @@ from . import views
 # from django.contrib.auth.views import logout
 app_name = 'pictweet'
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.index.as_view(), name='index'),
     path('new/', views.new, name='new'),
     path('user/', views.user, name='user'),
     path('login/', views.loginView.as_view(), name="login"),
