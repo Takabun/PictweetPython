@@ -17,14 +17,27 @@ from django.contrib.auth.models import User
 # ユーザー新規登録(new!!!)
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView,CreateView, FormView
+from django.views.generic import TemplateView,CreateView, FormView,ListView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
+#ページネーション
+from pure_pagination.mixins import PaginationMixin
 
 
-def index(request):
-  tweets = Tweet.objects.all()
-  return render(request, 'pictweet/index.html', {'tweets': tweets})
+#関数ビューの時はこっち。paginagte導入するまで。tweet=を定義でき、それをhtmlへ渡せる。
+# def index(request):
+#   tweets = Tweet.objects.all().order_by('-date_time')
+#   paginate_by = 10
+#   return render(request, 'pictweet/index.html', {'tweets': tweets})
+  
+class index(PaginationMixin, ListView):
+    model = Tweet
+    paginate_by = 5
+    template_name = "pictweet/index.html"
+    #クラスベースなので、"tweet =..."の形で、order_by('-date_time')を付与する事は出来ない。よって下記を定義。objectsとして使える。
+    def get_queryset(self):
+        return super().get_queryset().order_by('-date_time')
+
 
 from django.contrib.auth.decorators import login_required
 @login_required
@@ -43,9 +56,6 @@ def new(request):
     return render(request, 'pictweet/new.html', {'form': form})
     #↑インデントがズレてると、"No HTTP Method"エラー発生
 
-
-def create(request):
-  return render(request, 'pictweet/create.html')
 
 
 def user(request):

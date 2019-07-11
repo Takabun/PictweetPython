@@ -1,66 +1,54 @@
+{% load static %}
+{% load sass_tags %}
 <!DOCTYPE html>
 <html>
   <head>
     <title>Pictweet</title>
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-    <%= csrf_meta_tags %>
-    <script type="text/javascript">
-      WebFontConfig = {
-        google: { families: [ 'Unica+One::latin' ] }
-      };
-      (function() {
-        var wf = document.createElement('script');
-        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-        wf.type = 'text/javascript';
-        wf.async = 'true';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(wf, s);
-      })();
-    </script>
+      <link rel="stylesheet" type="text/css" href="{% sass_src 'pictweet/style.scss' %}">
+      <script type="text/javascript"></script>
   </head>
 
   <body>
   <header class="header">
     <div class="header__bar row">
       <h1 class="grid-6"><a href="/">PicTweet</a></h1>
-      <% if user_signed_in? %>
+        {% if user.id  %}
         <div class="user_nav grid-6">
-          <span><%= current_user.nickname %>
+          <span>{{ user }}
             <ul class="user__info">
               <li>
                 <a href="/users/<%= current_user.id %>">マイページ</a>
-                <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
+                <a href="{% url 'logout' %}">ログアウト</a>
               </li>
             </ul>
           </span>
-          <a class="post" href="/tweets/new">投稿する</a>
+          <a class="post" href="/pictweet/new">投稿する</a>
         </div>
-      <% else %>
+        {% else %}
         <div class="grid-6">
-          <%= link_to "ログイン", new_user_session_path, class: 'post' %>
-          <%= link_to "新規登録", new_user_registration_path, class: 'post' %>
+            <!-- <a href="">ログイン</a>
+            <a href=" %}">アカウント作成</a> -->
         </div>
-      <% end %>
+        {% endif %}
     </div>
   </header>
 
-
-
   <div class="contents row">
-    {{form}}
-    <!-- <%= form_tag('/tweets', method: :post) do %> -->
-      <h3>
-        投稿する
-      </h3>
-      <input placeholder="Image URL" type="text" name="image" autofocus="true">
-      <textarea placeholder="text" name="text" cols="30" rows="10"></textarea>
-      <input type="submit" value="SENT">
-    <!-- <% end %> -->
+      <form method="POST" enctype="multipart/form-data">
+        <!-- ここが、action=""のままだったら、POSTアクションが動かなかたよ！ -->
+        {% csrf_token %}
+        <p>画像を選択</p>
+        <label style="vertical-align: top;"> {{ form.image }}</label><br>
+
+        <p>テキストを入力</p>
+        <label placeholder="text" name="text" cols="30" rows="10"> {{ form.text }}</label><br>
+        <!-- {{ form.as_p }}  -->
+        <input type="submit" value="送信">
+      </form>      
   </div>
 
-  
+
+
     <footer>
       <p>
         Copyright PicTweet 2014.
@@ -70,12 +58,6 @@
 </html>
 
 
-<form method="POST" action="">
-  {% csrf_token %}
-  <label> {{ form.text }}</label><br>
 
-  <label style="vertical-align: top;"> {{ form.image }}</label><br>
 
-  <input type="submit" value="送信">
-</form>
 
