@@ -5,21 +5,7 @@
   <head>
     <title>Pictweet</title>
       <link rel="stylesheet" type="text/css" href="{% sass_src 'pictweet/style.scss' %}">
-
-    <script type="text/javascript"></script>
-      WebFontConfig = {
-        google: { families: [ 'Unica+One::latin' ] }
-      };
-      (function() {
-        var wf = document.createElement('script');
-        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-        wf.type = 'text/javascript';
-        wf.async = 'true';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(wf, s);
-      })();
-    </script>
+      <script type="text/javascript"></script>
   </head>
 
   <body>
@@ -28,7 +14,7 @@
       <h1 class="grid-6"><a href="/">PicTweet</a></h1>
         {% if user.id  %}
         <div class="user_nav grid-6">
-          <span>{{ user.nickname }}
+          <span>{{ user }}
             <ul class="user__info">
               <li>
                 <a href="/users/<%= current_user.id %>">マイページ</a>
@@ -47,15 +33,36 @@
     </div>
   </header>
 
-
+  <div class="contents row">
   {% for tweet in tweets %}
-  <tr>
-      <td>{{ tweet.text }}</td>
-      <img src="{{tweet.image.url}}" width=50px height=50px />
-      <!-- ↑カラム名がimageなので、imageにしないと表示されない -->
-      <td>{{ tweet.user }}</td>
-  <tr>
+  <div class="content__post", height="400", width="400", style="background-image: url({{tweet.image.url}});">
+    <div class="more">
+      <span><img src="{% static 'pictweet/images/arrow_top.png' %}" /></span>
+      <!-- ↑こうしたら矢印表示されたよ！ -->
+      <ul class="more_list">
+        <li>
+          <a href="">詳細</a>
+        </li>
+        {% if user.is_authenticated and tweet.user.id == request.user.id %}
+          <li>
+              <a href="">編集</a>
+          </li>
+          <li>
+              <a href="">削除</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+    <!-- <%= simple_format(tweet.text) %> -->
+    <p>{{ tweet.text }}</p>
+    <span class="name">
+      <a href="/users/<%= tweet.user_id %>">
+        <span>投稿者</span>{{ tweet.user }}
+      </a>
+    </span>
+  </div>
   {% endfor %}
+</div>
 
 
 
@@ -66,3 +73,4 @@
     </footer>
   </body>
 </html>
+

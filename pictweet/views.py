@@ -23,7 +23,7 @@ from django.urls import reverse_lazy
 
 
 def index(request):
-  tweets = Tweet.objects.all()
+  tweets = Tweet.objects.all().order_by('-date_time')
   return render(request, 'pictweet/index.html', {'tweets': tweets})
 
 from django.contrib.auth.decorators import login_required

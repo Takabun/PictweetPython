@@ -210,7 +210,11 @@ header.header {
     right: 0;
   }
 }
+
+
 div.contents.row {
+  width: 700px; //オリジナル
+  margin: 20px auto;   //オリジナル//
   h2 {
     @include boxBase(20px 0, 0);
     font-weight: normal;
@@ -227,10 +231,12 @@ div.contents.row {
     @include boxBase(20px 0 ,30px);
     position: relative;
     height: 400px;
+    width: 700px; //オリジナル
     color: #fff;
     background-size: cover;
     background-position: center center;
     border-radius: 3px;
+    margin: 20px auto;   //オリジナル
     box-shadow: 0 0 10px rgba($black,0.2);
     &:after {
       content: '';
@@ -365,3 +371,6 @@ footer {
     text-align: center;
   }
 }
+
+
+
