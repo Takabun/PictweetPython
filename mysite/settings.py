@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'polls.apps.PollsConfig', ##Pollアプリ
     'pictweet.apps.PictweetConfig', ##Pictweetアプリ。なぜか、記入するとエラー
     'sass_processor', #sassの関連
 
@@ -41,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig',#accounts
+
 ]
 
 MIDDLEWARE = [
@@ -88,7 +87,7 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': os.path.join(BASE_DIR, 'db.mysql'),
     # }
-}
+} 
 
 
 # Password validation
@@ -146,3 +145,19 @@ LOGIN_URL='pictweet:login'     # ログイン
 LOGOUT_URL='pictweet:logout'   # ログアウト
 LOGIN_REDIRECT_URL='pictweet:index'      # ログイン
 LOGOUT_REDIRECT_URL='pictweet:login'    # ログアウト
+
+
+#画像投稿関連
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+#  すべてのホスト設定の許可
+ALLOWED_HOSTS = ['*'] 
+
+# Parse database configuration from $DATABASE_URL
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+ 
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

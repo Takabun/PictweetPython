@@ -14,3 +14,11 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
 
 application = get_wsgi_application()
+
+# デプロイにあたり追記
+from dj_static import Cling
+from django.core.wsgi import get_wsgi_application
+#↓アプリ名ではなくプロジェクト名
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "PictweetPython.settings")
+
+application = Cling(get_wsgi_application())

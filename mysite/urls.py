@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import  include, path
-
+from django.conf.urls import url #画像表示のため
+from django.conf import settings #画像表示のため
+from django.conf.urls.static import static #画像表示のため
 
 urlpatterns = [
-    path('polls/', include('polls.urls')),
     path('pictweet/', include('pictweet.urls')), #pictweetのため追記
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),  #accountアプリのため追記
 ]
+
+
+#画像表示のため
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
