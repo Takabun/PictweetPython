@@ -9,17 +9,9 @@ https://docs.djangoproject.com/en/2.2/howto/deployment/wsgi/
 
 import os
 
-# もともとあった記載
-# from django.core.wsgi import get_wsgi_application
-
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
-
-# application = get_wsgi_application()
-
-# デプロイにあたり追記
-from dj_static import Cling
 from django.core.wsgi import get_wsgi_application
-#↓アプリ名ではなくプロジェクト名
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
+#元はこう
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
+# os.environ["DJANGO_SETTINGS_MODULE"] = "pictweet3.settings"
 
-application = Cling(get_wsgi_application())
+application = get_wsgi_application()

@@ -25,13 +25,13 @@ SECRET_KEY = '1+nrn&gh&=d^f65&+jf!m%k#ilcg11j4(25hnsg11*7zeg(45v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'pictweet.apps.PictweetConfig', ##Pictweetアプリ。なぜか、記入するとエラー
+    'pictweetpython2.apps.Pictweetpython2Config', ##Pictweetアプリ。なぜか、記入するとエラー
     'sass_processor', #sassの関連
 
     'django.contrib.admin',
@@ -83,11 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': os.path.join(BASE_DIR, 'db.mysql'),
-    # }
-} 
+}
 
 
 # Password validation
@@ -141,23 +137,44 @@ SASS_PROCESSOR_ROOT = 'static'
 # LOGOUT_REDIRECT_URL = 'index' # ログアウト後のリダイレクト先
 
 #Pictweetログイン関連()
-LOGIN_URL='pictweet:login'     # ログイン
-LOGOUT_URL='pictweet:logout'   # ログアウト
-LOGIN_REDIRECT_URL='pictweet:index'      # ログイン
-LOGOUT_REDIRECT_URL='pictweet:login'    # ログアウト
+LOGIN_URL='pictweetpython2:login'     # ログイン
+LOGOUT_URL='pictweetpython2:logout'   # ログアウト
+LOGIN_REDIRECT_URL='pictweetpython2:index'      # ログイン
+LOGOUT_REDIRECT_URL='pictweetpython2:login'    # ログアウト
 
 
 #画像投稿関連
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-#  すべてのホスト設定の許可
-ALLOWED_HOSTS = ['*'] 
 
-# Parse database configuration from $DATABASE_URL
+
+#local_setting関連.この記事の通りだとなぜかうまくいかなかった
+# DEBUG = False
+# try:
+#     from .local_settings import *
+# except ImportError:
+#     pass
+
+# if not DEBUG:
+#     import django_heroku
+#     django_heroku.settings(locals())
+
+
+
+#↓新しい記事
 import dj_database_url
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
- 
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+DATABASES['default'] = dj_database_url.config()
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ALLOWED_HOSTS = ['*']
+
+STATIC_ROOT = 'staticfiles'
+
+DEBUG = False
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

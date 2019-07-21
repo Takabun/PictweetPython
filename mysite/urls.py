@@ -20,8 +20,10 @@ from django.conf import settings #画像表示のため
 from django.conf.urls.static import static #画像表示のため
 
 urlpatterns = [
-    path('pictweet/', include('pictweet.urls')), #pictweetのため追記
+
+    path('pictweetpython2/', include('pictweetpython2.urls')), #pictweetのため追記
     path('admin/', admin.site.urls),
+
 ]
 
 

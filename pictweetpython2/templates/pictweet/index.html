@@ -1,0 +1,76 @@
+{% load static %}
+{% load sass_tags %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pictweet</title>
+      <link rel="stylesheet" type="text/css" href="{% sass_src 'pictweet/style.scss' %}">
+      <script type="text/javascript"></script>
+  </head>
+
+  <body>
+  <header class="header">
+    <div class="header__bar row">
+      <h1 class="grid-6"><a href="/">PicTweet</a></h1>
+        {% if user.id  %}
+        <div class="user_nav grid-6">
+          <span>{{ user }}
+            <ul class="user__info">
+              <li>
+                <a href="/users/<%= current_user.id %>">マイページ</a>
+                <a href="{% url 'logout' %}">ログアウト</a>
+              </li>
+            </ul>
+          </span>
+          <a class="post" href="/pictweet/new">投稿する</a>
+        </div>
+        {% else %}
+        <div class="grid-6">
+            <!-- <a href="">ログイン</a>
+            <a href=" %}">アカウント作成</a> -->
+        </div>
+        {% endif %}
+    </div>
+  </header>
+
+  <div class="contents row">
+  {% for tweet in object_list %}
+  <div class="content__post", height="400", width="400", style="background-image: url({{tweet.image.url}});">
+    <div class="more">
+      <span><img src="{% static 'pictweet/images/arrow_top.png' %}" /></span>
+      <!-- ↑こうしたら矢印表示されたよ！ -->
+      <ul class="more_list">
+        <li>
+          <a href="">詳細</a>
+        </li>
+        {% if user.is_authenticated and tweet.user.id == request.user.id %}
+          <li>
+              <a href="">編集</a>
+          </li>
+          <li>
+              <a href="">削除</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+    <!-- <%= simple_format(tweet.text) %> -->
+    <p>{{ tweet.text }}</p>
+    <span class="name">
+      <a href="/users/<%= tweet.user_id %>">
+        <span>投稿者</span>{{ tweet.user }}
+      </a>
+    </span>
+  </div>
+  {% endfor %}
+</div>
+    {% include 'commons/pagination2.html' %}
+
+
+    <footer>
+      <p>
+        Copyright PicTweet 2014.
+      </p>
+    </footer>
+  </body>
+</html>
+
