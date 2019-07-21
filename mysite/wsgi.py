@@ -10,7 +10,8 @@ https://docs.djangoproject.com/en/2.2/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
-
+#元はこう
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
+# os.environ["DJANGO_SETTINGS_MODULE"] = "pictweet3.settings"
 
 application = get_wsgi_application()
