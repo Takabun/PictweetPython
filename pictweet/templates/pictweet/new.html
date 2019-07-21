@@ -1,0 +1,63 @@
+{% load static %}
+{% load sass_tags %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pictweet</title>
+      <link rel="stylesheet" type="text/css" href="{% sass_src 'pictweet/style.scss' %}">
+      <script type="text/javascript"></script>
+  </head>
+
+  <body>
+  <header class="header">
+    <div class="header__bar row">
+      <h1 class="grid-6"><a href="/">PicTweet</a></h1>
+        {% if user.id  %}
+        <div class="user_nav grid-6">
+          <span>{{ user }}
+            <ul class="user__info">
+              <li>
+                <a href="/users/<%= current_user.id %>">マイページ</a>
+                <a href="{% url 'logout' %}">ログアウト</a>
+              </li>
+            </ul>
+          </span>
+          <a class="post" href="/pictweet/new">投稿する</a>
+        </div>
+        {% else %}
+        <div class="grid-6">
+            <!-- <a href="">ログイン</a>
+            <a href=" %}">アカウント作成</a> -->
+        </div>
+        {% endif %}
+    </div>
+  </header>
+
+  <div class="contents row">
+      <form method="POST" enctype="multipart/form-data">
+        <!-- ここが、action=""のままだったら、POSTアクションが動かなかたよ！ -->
+        {% csrf_token %}
+        <p>画像を選択</p>
+        <label style="vertical-align: top;"> {{ form.image }}</label><br>
+
+        <p>テキストを入力</p>
+        <label placeholder="text" name="text" cols="30" rows="10"> {{ form.text }}</label><br>
+        <!-- {{ form.as_p }}  -->
+        <input type="submit" value="送信">
+      </form>      
+  </div>
+
+
+
+    <footer>
+      <p>
+        Copyright PicTweet 2014.
+      </p>
+    </footer>
+  </body>
+</html>
+
+
+
+
+
