@@ -1,0 +1,86 @@
+{% load static %}
+{% load sass_tags %}
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Pictweet</title>
+      <link rel="stylesheet" type="text/css" href="{% sass_src 'pictweet/style.scss' %}">
+      <script type="text/javascript"></script>
+  </head>
+
+  <body>
+  <header class="header">
+    <div class="header__bar row">
+      <h1 class="grid-6"><a href="/pictweetpython2">PicTweet</a></h1>
+        {% if user.id  %}
+        <div class="user_nav grid-6">
+          <span>{{ user }}
+            <ul class="user__info">
+              <li>
+                <a href="/users/<%= current_user.id %>">マイページ</a>
+                <a href="{% url 'pictweetpython2:logout' %}">ログアウト</a>
+              </li>
+            </ul>
+          </span>
+          <a class="post" href="/pictweetpython2/new">投稿する</a>
+        </div>
+        {% else %}
+        <div class="grid-6">
+            <!-- <a href="">ログイン</a>
+            <a href=" %}">アカウント作成</a> -->
+        </div>
+        {% endif %}
+    </div>
+  </header>
+
+
+
+<div class ="contents row">
+    <div class="content__post", height="400", width="400", style="background-image: url({{tweet.image.url}});">
+        <div class="more">
+          <span><img src="{% static 'pictweet/images/arrow_top.png' %}" /></span>
+          <!-- ↑こうしたら矢印表示されたよ！ -->
+          <ul class="more_list">
+            {% if user.is_authenticated and tweet.user.id == request.user.id %}
+              <li>
+                  <a href="{% url 'pictweetpython2:edit' tweet.pk %}">編集</a>
+              </li>
+              <li>
+                  <a href="{% url 'pictweetpython2:delete' tweet.pk %}">削除</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+        <!-- <%= simple_format(tweet.text) %> -->
+        <p>{{ tweet.text }}</p>
+        <span class="name">
+          <a href="{% url 'pictweetpython2:user' user.pk %}">
+            <span>投稿者</span>{{ tweet.user }}
+          </a>
+        </span>
+      </div>
+
+
+<div class="container"> 
+  {% if user.id  %}
+  <p>コメントする</p>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label placeholder="コメントする" name="text" cols="30" rows="2" class="textbox"> {{ form.text }}</label>
+      <input type="submit" value="SENT">
+    </form>   
+  {% endif %}
+  
+      <div class="comments">   
+        <h4>＜コメント一覧＞</h4>
+        {% for comment in comments %}
+            <p>
+              <strong><a href="{% url 'pictweetpython2:user' user.pk %}">{{ comment.user }}</a>：</strong>
+              {{ comment.text }}
+            </p>
+          {% endfor %}
+      </div>
+      
+  
+</div>

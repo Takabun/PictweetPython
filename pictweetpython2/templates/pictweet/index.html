@@ -11,23 +11,23 @@
   <body>
   <header class="header">
     <div class="header__bar row">
-      <h1 class="grid-6"><a href="/">PicTweet</a></h1>
+      <h1 class="grid-6"><a href="/pictweetpython2">PicTweet</a></h1>
         {% if user.id  %}
         <div class="user_nav grid-6">
           <span>{{ user }}
             <ul class="user__info">
               <li>
                 <a href="/users/<%= current_user.id %>">マイページ</a>
-                <a href="{% url 'logout' %}">ログアウト</a>
+                <a href="{% url 'pictweetpython2:logout' %}">ログアウト</a>
               </li>
             </ul>
           </span>
-          <a class="post" href="/pictweet/new">投稿する</a>
+          <a class="post" href="/pictweetpython2/new">投稿する</a>
         </div>
         {% else %}
         <div class="grid-6">
-            <!-- <a href="">ログイン</a>
-            <a href=" %}">アカウント作成</a> -->
+            <a class="post" href="{% url 'pictweetpython2:login' %}">ログイン</a>
+            <a class="post" href="/pictweetpython2/createuser"> 新規登録</a>
         </div>
         {% endif %}
     </div>
@@ -41,14 +41,14 @@
       <!-- ↑こうしたら矢印表示されたよ！ -->
       <ul class="more_list">
         <li>
-          <a href="">詳細</a>
+          <a href="{% url 'pictweetpython2:show' tweet.pk %}">詳細</a>
         </li>
         {% if user.is_authenticated and tweet.user.id == request.user.id %}
           <li>
-              <a href="">編集</a>
+              <a href="{% url 'pictweetpython2:edit' tweet.pk %}">編集</a>
           </li>
           <li>
-              <a href="">削除</a>
+              <a href="{% url 'pictweetpython2:delete' tweet.pk %}">削除</a>
           </li>
         {% endif %}
       </ul>
@@ -56,7 +56,7 @@
     <!-- <%= simple_format(tweet.text) %> -->
     <p>{{ tweet.text }}</p>
     <span class="name">
-      <a href="/users/<%= tweet.user_id %>">
+      <a href="{% url 'pictweetpython2:user' tweet.user.pk %}">
         <span>投稿者</span>{{ tweet.user }}
       </a>
     </span>

@@ -3,7 +3,7 @@ from django import forms
 # from django.contrib.auth.forms import AuthenticationForm
 from .models import User
 from django.contrib.auth import forms as auth_forms
-from .models import Tweet #modelform導入につき
+from .models import Tweet, Comment #modelform導入につき
 
 
 class TweetForm(forms.ModelForm):
@@ -25,3 +25,11 @@ class LoginForm(auth_forms.AuthenticationForm):
         super().__init__(*args, **kw)
         for field in self.fields.values():
             field.widget.attrs['placeholder'] = field.label
+
+class CommentForm(forms.ModelForm):
+    class Meta: ##コメントアウトしないとエラーが出るようだ
+        #利用するモデルクラスを設定
+        model = Comment
+        text = forms.CharField(widget=forms.Textarea(attrs={'placeholder':'ユーザ名'}))
+        #利用するモデルのフィールドを設定
+        fields = ('text',)

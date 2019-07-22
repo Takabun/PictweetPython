@@ -1,0 +1,19 @@
+{% load static %}
+{% load sass_tags %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pictweet</title>
+      <link rel="stylesheet" type="text/css" href="{% sass_src 'pictweet/style.scss' %}">
+      <script type="text/javascript"></script>
+  </head>
+
+
+<div class="contents row">
+    <div class="success">
+      <h3>
+        削除が完了しました。
+      </h3>
+      <a class="btn" href="/pictweetpython2">投稿一覧へ戻る</a>
+    </div>
+  </div>

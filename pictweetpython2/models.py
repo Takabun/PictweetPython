@@ -11,6 +11,7 @@ class User(models.Model):
 
 class Tweet(models.Model):
 
+
   # # text = models.TextField(max_length=140, blank=False)
   # # image = models.ImageField(upload_to='pictweet/images/')
   # # date_time = models.DateTimeField()
@@ -30,14 +31,16 @@ class Tweet(models.Model):
 
 
 class Comment(models.Model):
+  class Meta: #なんかtweetモデルにあったので追記
+    db_table = 'comment' #なんかtweetモデルにあったので追記
   text = models.TextField(max_length=140, blank=False)
   tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
-  created_at = models.DateTimeField()
+  user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+  created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Like(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='like_user')
   tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
-  created_at = models.DateTimeField()
+  created_at = models.DateTimeField(auto_now_add=True)
 

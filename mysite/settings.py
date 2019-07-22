@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1+nrn&gh&=d^f65&+jf!m%k#ilcg11j4(25hnsg11*7zeg(45v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -40,11 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages', 
 
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -172,9 +174,51 @@ ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = 'staticfiles'
 
-DEBUG = False
+#なぜか、debug= Trueにしたらcssが読み込まれた！！(migrationの時はFalseだったけど)
+DEBUG = True
 
 try:
     from .local_settings import *
 except ImportError:
     pass
+
+
+
+# STATIC_ROOT:集約用の管理コマンド「manage.py collectstatic」を実行した時に、staticファイルがコピーされるディレクトリのパス。
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+#STATIC_URL:配信用のディレクトリ名.外部から見ると、プロジェクトのURL + 配信用のURL という形式となります。
+# デフォルトの「'/static/'」から変更することはあまり無いでしょう。
+STATIC_URL = '/static/' # localでcssを読み込むためのパス(たぶん)
+
+
+# 各アプリケーションのstatic以外に配信するディレクトリがある場合に追加する。
+# 例：全アプリケーションが共通で使う静的ファイルがある場合、プロジェクトディレクトリ直下にstaticディレクトリを作成し、STATICFILES_DIRSにパスを追加する。オプションでSTATIC_URLとは異なる名前で公開できます。
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'), # サーバでcssを読み込むためのパス
+)
+
+#Amazon S3 や CDNを利用する際には、下記を記載する
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+
+if DEBUG:
+
+    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+    MEDIA_URL = S3_URL
+
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = None
+
+    import django_heroku
+    django_heroku.settings(locals())
+
+db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'].update(db_from_env)
