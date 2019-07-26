@@ -31,9 +31,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'pictweetpython2.apps.Pictweetpython2Config', ##Pictweetアプリ。なぜか、記入するとエラー
+    'pictweetpython2.apps.Pictweetpython2Config',
     'sass_processor', #sassの関連
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -133,16 +132,11 @@ STATICFILES_DIRS = (
 SASS_PROCESSOR_ROOT = 'static'
 
 
-# #accountsアプリ関連(accontsアプリを経由してログインする時は使用)
-# LOGIN_URL = 'login' # ログインしていないときのリダイレクト先
-# LOGIN_REDIRECT_URL = 'index' # ログイン後のリダイレクト先
-# LOGOUT_REDIRECT_URL = 'index' # ログアウト後のリダイレクト先
-
 #Pictweetログイン関連()
-LOGIN_URL='pictweetpython2:login'     # ログイン
-LOGOUT_URL='pictweetpython2:logout'   # ログアウト
-LOGIN_REDIRECT_URL='pictweetpython2:index'      # ログイン
-LOGOUT_REDIRECT_URL='pictweetpython2:login'    # ログアウト
+LOGIN_URL='pictweetpython2:login'  
+LOGOUT_URL='pictweetpython2:logout'
+LOGIN_REDIRECT_URL='pictweetpython2:index'   
+LOGOUT_REDIRECT_URL='pictweetpython2:login' 
 
 
 #画像投稿関連
@@ -188,8 +182,7 @@ except ImportError:
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-#STATIC_URL:配信用のディレクトリ名.外部から見ると、プロジェクトのURL + 配信用のURL という形式となります。
-# デフォルトの「'/static/'」から変更することはあまり無いでしょう。
+#STATIC_URL:配信用のディレクトリ名.外部から見ると、プロジェクトのURL + 配信用のURL という形式となります。デフォルトの「'/static/'」から変更することはあまり無いでしょう。
 STATIC_URL = '/static/' # localでcssを読み込むためのパス(たぶん)
 
 

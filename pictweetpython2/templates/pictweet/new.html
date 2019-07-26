@@ -17,7 +17,7 @@
           <span>{{ user }}
             <ul class="user__info">
               <li>
-                <a href="/users/<%= current_user.id %>">マイページ</a>
+                <a href="{% url 'pictweetpython2:user' user.pk %}">マイページ</a>
                 <a href="{% url 'pictweetpython2:logout' %}">ログアウト</a>
               </li>
             </ul>

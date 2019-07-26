@@ -18,7 +18,7 @@
           <span>{{ user }}
             <ul class="user__info">
               <li>
-                <a href="/users/<%= current_user.id %>">マイページ</a>
+                <a href="{% url 'pictweetpython2:user' user.pk %}">マイページ</a>
                 <a href="{% url 'pictweetpython2:logout' %}">ログアウト</a>
               </li>
             </ul>
@@ -55,7 +55,7 @@
         <!-- <%= simple_format(tweet.text) %> -->
         <p>{{ tweet.text }}</p>
         <span class="name">
-          <a href="{% url 'pictweetpython2:user' user.pk %}">
+          <a href="{% url 'pictweetpython2:user' tweet.user.pk %}">
             <span>投稿者</span>{{ tweet.user }}
           </a>
         </span>
@@ -76,7 +76,7 @@
         <h4>＜コメント一覧＞</h4>
         {% for comment in comments %}
             <p>
-              <strong><a href="{% url 'pictweetpython2:user' user.pk %}">{{ comment.user }}</a>：</strong>
+              <strong><a href="{% url 'pictweetpython2:user' tweet.user.pk %}">{{ comment.user }}</a>：</strong>
               {{ comment.text }}
             </p>
           {% endfor %}

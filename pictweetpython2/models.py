@@ -10,29 +10,20 @@ class User(models.Model):
 
 
 class Tweet(models.Model):
-
-
-  # # text = models.TextField(max_length=140, blank=False)
-  # # image = models.ImageField(upload_to='pictweet/images/')
-  # # date_time = models.DateTimeField()
-  # # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-  # # #↑元はUserのみだった
-  # # like_count = models.IntegerField(default=0)
     """Tweetモデル"""
     class Meta:
-        db_table = 'tweet' # データを保存するテーブル名
+        db_table = 'tweet'
     text = models.TextField(max_length=140, blank=False)
     image = models.ImageField(upload_to='documents/')
     date_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    #↑元はUserのみだった
     like_count = models.IntegerField(default=0)
 
 
 
 class Comment(models.Model):
-  class Meta: #なんかtweetモデルにあったので追記
-    db_table = 'comment' #なんかtweetモデルにあったので追記
+  class Meta:
+    db_table = 'comment'
   text = models.TextField(max_length=140, blank=False)
   tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -40,7 +31,7 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
-  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='like_user')
+  user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='like_user')
   tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
   created_at = models.DateTimeField(auto_now_add=True)
 
